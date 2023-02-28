@@ -18,11 +18,7 @@ import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import org.springframework.security.core.userdetails.User;
 
-/**
- * @Copyright https://loizenai.com
- * @author loizenai.com
- *
- */
+
 
 @Component
 public class JwtProvider {

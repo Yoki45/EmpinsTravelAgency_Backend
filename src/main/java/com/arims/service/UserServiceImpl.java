@@ -1,7 +1,7 @@
 package com.arims.service;
 
-import com.arims.model.Role;
-import com.arims.model.User;
+import com.arims.exception.UserNotFoundException;
+import com.arims.model.*;
 import com.arims.repository.RoleRepository;
 import com.arims.repository.UserRepository;
 import com.arims.web.dto.UserRegistrationDto;
@@ -18,6 +18,7 @@ import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,6 +29,8 @@ public class UserServiceImpl implements UserService {
 
 
     private UserRepository userRepository;
+
+   // private ProfileRepository profileRepository;
 
     private RoleRepository roleRepository;
 
@@ -46,14 +49,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public User save(UserRegistrationDto registrationDto) {
         User user = new User(registrationDto.getFirstName(),
-                registrationDto.getLastName(), registrationDto.getEmail(),
-                passwordEncoder.encode(registrationDto.getPassword()),
+               registrationDto.getLastName(), registrationDto.getEmail(),
+                passwordEncoder.encode(registrationDto.getPassword()),registrationDto.getGender(),
+                registrationDto.getPhone(),
                 Arrays.asList());
 
        return userRepository.save(user);
-
-
-
 
     }
 
@@ -71,8 +72,38 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User Update(User user) {
+        return userRepository.save(user);
+
+    }
+
+    @Override
+    public User findUserById(Long id) {
+        return (User)this.userRepository.findById(id).orElseThrow(() -> {
+            return new UserNotFoundException("User of id  " + id + " was not found");
+        });
+    }
+
+
+
+
+    public User updateUserProfile(User user) {
+        return (User) this.userRepository.save(user);
+    }
+
+
+
+    @Override
     public User findUser(String email) {
         return userRepository.findByEmail(email);
+
+    }
+
+
+
+    public Optional<User> find(Long id){
+
+        return userRepository.findById(id);
     }
 
     @Override

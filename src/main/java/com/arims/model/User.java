@@ -23,11 +23,19 @@ public class User implements UserDetails {
 
     @Column(name = "last_name")
     private String lastName;
-
     private String email;
     @Column(nullable = true)
-
     private String password;
+
+    @Column(name="gender")
+    private String gender;
+
+
+    @Column(name="phone_number")
+    private String phone;
+
+    //TO DO , add Profile
+
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
@@ -40,15 +48,20 @@ public class User implements UserDetails {
     private Collection<Role> roles = new ArrayList<>();
 
 
-
-
-    public User(String firstName, String lastName, String email, String password, Collection<Role> roles) {
+    public User(String firstName, String lastName, String email, String password,  String gender, String phone,
+              Collection<Role> roles) {
         super();
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.roles = roles;
+        this.gender = gender;
+        this.phone = phone;
+
+        //this.profile = profile;
+
+
     }
     public Long getId() {
         return id;
@@ -83,10 +96,24 @@ public class User implements UserDetails {
     public Collection<Role> getRoles() {
         return roles;
     }
+
+
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+
+
+
     public void setRoles(Collection<Role> roles) {
         this.roles = roles;
     }
-    
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
