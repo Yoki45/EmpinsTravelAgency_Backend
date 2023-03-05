@@ -1,31 +1,29 @@
 package com.arims.service;
 
-import com.arims.model.Role;
+import com.arims.dto.UserRegistrationDto;
+import com.arims.enums.Role;
 import com.arims.model.User;
-import com.arims.web.dto.UserRegistrationDto;
+import com.arims.model.UserRole;
+
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public interface UserService extends UserDetailsService {
+public interface UserService  {
 
     User save(UserRegistrationDto registrationDto);
 
-    Role saveRole(Role role);
-    void  addRoleToUser (String email,String roleName);
+    UserRole saveRole(UserRole role);
 
+    void addRoleToUser(String email, Role role);
 
-    User Update(User user);
+    User updateUser(User user);
 
     User findUserById(Long id);
 
-
-
-    User findUser (String email);
-
-
+    User findUser(String email);
 
     List<User> getUsers();
 
