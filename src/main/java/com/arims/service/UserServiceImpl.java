@@ -9,21 +9,14 @@ import com.arims.repository.UserRoleRepository;
 import com.arims.util.Utils;
 
 import jakarta.transaction.Transactional;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -34,7 +27,7 @@ public class UserServiceImpl implements UserService {
     private UserRoleRepository roleRepository;
 
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
 
     public UserServiceImpl(UserRepository userRepository,UserRoleRepository roleRepository) {
@@ -118,6 +111,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Role> getRoles() {
         return Arrays.asList(Role.values());
+    }
+
+    @Override
+    public Optional<User> findOneByEmail(String email) {
+        return userRepository.findOneByEmail(email);
     }
 
 

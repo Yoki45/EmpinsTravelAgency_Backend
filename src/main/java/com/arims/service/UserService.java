@@ -5,10 +5,10 @@ import com.arims.enums.Role;
 import com.arims.model.User;
 import com.arims.model.UserRole;
 
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public interface UserService  {
@@ -26,6 +26,7 @@ public interface UserService  {
     User findUser(String email);
 
     List<User> getUsers();
+    Optional<User> findOneByEmail(String email);
 
     List<Role> getRoles();
 
