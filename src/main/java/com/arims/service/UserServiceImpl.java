@@ -1,67 +1,65 @@
 package com.arims.service;
 
+import com.arims.dto.UserRegistrationDto;
+import com.arims.enums.Role;
 import com.arims.exception.UserNotFoundException;
 import com.arims.model.*;
-import com.arims.repository.RoleRepository;
 import com.arims.repository.UserRepository;
-import com.arims.web.dto.UserRegistrationDto;
-import lombok.extern.slf4j.Slf4j;
+import com.arims.repository.UserRoleRepository;
+import com.arims.util.Utils;
+
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
-@Slf4j
 public class UserServiceImpl implements UserService {
+
 
     //todo rolebased authentication
 
 
 
+
     private UserRepository userRepository;
 
-   // private ProfileRepository profileRepository;
-
-    private RoleRepository roleRepository;
+    private UserRoleRepository roleRepository;
 
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
 
-    public UserServiceImpl(UserRepository userRepository,RoleRepository roleRepository) {
-        super();
+    public UserServiceImpl(UserRepository userRepository,UserRoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
 
     }
-
 
     @Override
     public User save(UserRegistrationDto registrationDto) {
         User user = new User(registrationDto.getFirstName(),
                registrationDto.getLastName(), registrationDto.getEmail(),
                 passwordEncoder.encode(registrationDto.getPassword()),registrationDto.getGender(),
+
                 registrationDto.getPhone()
                 );
+
+                registrationDto.getPhone());
+
 
        return userRepository.save(user);
 
     }
 
     @Override
-    public Role saveRole(Role role) {
+    public UserRole saveRole(UserRole role) {
         return roleRepository.save(role);
     }
 
@@ -70,18 +68,31 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByEmail(email);
         Role role = roleRepository.findByName(roleName);
         user.getRoles().add(role);
+=======
+    @Override
+    public void addRoleToUser(String email, Role role) {
+
+        userRepository.findOneByEmail(email).ifPresent(user->{
+            UserRole  roles =new UserRole();
+            roles.setUser(user);
+            roles.setRole(role);
+            roles.setCreationDate(Utils.getCurrentDate());
+             roleRepository.save(roles);
+        });
+       
+
 
     }
 */
     @Override
-    public User Update(User user) {
+    public User updateUser(User user) {
         return userRepository.save(user);
 
     }
 
     @Override
     public User findUserById(Long id) {
-        return (User)this.userRepository.findById(id).orElseThrow(() -> {
+        return this.userRepository.findById(id).orElseThrow(() -> {
             return new UserNotFoundException("User of id  " + id + " was not found");
         });
     }
@@ -90,14 +101,16 @@ public class UserServiceImpl implements UserService {
 
 
     public User updateUserProfile(User user) {
-        return (User) this.userRepository.save(user);
+        return  this.userRepository.save(user);
     }
 
 
 
     @Override
     public User findUser(String email) {
-        return userRepository.findByEmail(email);
+        return this.userRepository.findOneByEmail(email).orElseThrow(() -> {
+            return new UserNotFoundException("User with email  " + email + " was not found");
+        });
 
     }
 
@@ -115,23 +128,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<Role> getRoles() {
-        return roleRepository.findAll();
+        return Arrays.asList(Role.values());
     }
-
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-        User user = userRepository.findByEmail(username);
-        if(user == null) {
-            throw new UsernameNotFoundException("Invalid username or password.");
-        }
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
-                mapRolesToAuthorities(user.getRoles()));
+    public Optional<User> findOneByEmail(String email) {
+        return userRepository.findOneByEmail(email);
     }
+
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles){
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName().name())).collect(Collectors.toList());
     }
+
 
 
 

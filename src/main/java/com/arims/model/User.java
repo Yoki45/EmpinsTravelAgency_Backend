@@ -1,6 +1,7 @@
 package com.arims.model;
 
 
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -11,11 +12,19 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
 
 @Entity
 @NoArgsConstructor
-@Table(name =  "user", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
-public class User implements UserDetails {
+@Table(name =  "user")
+@Data
+public class User  {
 
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
@@ -26,6 +35,7 @@ public class User implements UserDetails {
 
     @Column(name = "last_name")
     private String lastName;
+    @Column(name = "email",unique = true)
     private String email;
     @Column(nullable = true)
     private String password;
@@ -50,8 +60,11 @@ public class User implements UserDetails {
 
 
 
+
     public User(String firstName, String lastName, String email, String password,  String gender, String phone
              ) {
+
+    public User(String firstName, String lastName, String email, String password,  String gender, String phone) {
         super();
         this.firstName = firstName;
         this.lastName = lastName;
@@ -59,6 +72,7 @@ public class User implements UserDetails {
         this.password = password;
         this.gender = gender;
         this.phone = phone;
+
 
         //this.profile = profile;
 
@@ -133,23 +147,8 @@ public class User implements UserDetails {
     @Override
     public boolean isAccountNonExpired() {
         return true;
-    }
- 
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
- 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
- 
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 
-
+    }
+    
 
 }
