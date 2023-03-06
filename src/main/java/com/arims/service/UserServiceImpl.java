@@ -26,6 +26,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserServiceImpl implements UserService {
 
+    //todo rolebased authentication
+
 
 
     private UserRepository userRepository;
@@ -51,8 +53,8 @@ public class UserServiceImpl implements UserService {
         User user = new User(registrationDto.getFirstName(),
                registrationDto.getLastName(), registrationDto.getEmail(),
                 passwordEncoder.encode(registrationDto.getPassword()),registrationDto.getGender(),
-                registrationDto.getPhone(),
-                Arrays.asList());
+                registrationDto.getPhone()
+                );
 
        return userRepository.save(user);
 
@@ -63,14 +65,14 @@ public class UserServiceImpl implements UserService {
         return roleRepository.save(role);
     }
 
-    @Override
+   /* @Override
     public void addRoleToUser(String email, String roleName) {
         User user = userRepository.findByEmail(email);
         Role role = roleRepository.findByName(roleName);
         user.getRoles().add(role);
 
     }
-
+*/
     @Override
     public User Update(User user) {
         return userRepository.save(user);
@@ -128,7 +130,7 @@ public class UserServiceImpl implements UserService {
                 mapRolesToAuthorities(user.getRoles()));
     }
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles){
-        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
+        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName().name())).collect(Collectors.toList());
     }
 
 

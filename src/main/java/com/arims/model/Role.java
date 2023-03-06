@@ -1,39 +1,50 @@
 package com.arims.model;
 
+
+import com.arims.enums.ERole;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 
 @Entity
-@NoArgsConstructor
 @Table(name="role")
 public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(nullable = false,length=45)
-    private String name;
+    private Integer id;
 
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    private ERole name;
 
+    public Role() {
 
-    public Role(String name) {
-        super();
-        this.name = name;
-        this.id=id;
     }
 
-    public Long getId() {
+    public Role(ERole name) {
+        this.name = name;
+    }
+
+    public Integer getId() {
         return id;
     }
-    public void setId(Long id) {
+
+    public void setId(Integer id) {
         this.id = id;
     }
-    public String getName() {
+
+    public ERole getName() {
         return name;
     }
-    public void setName(String name) {
+
+    public void setName(ERole name) {
         this.name = name;
     }
 }
+
+
+
+
+

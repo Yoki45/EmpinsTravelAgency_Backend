@@ -14,7 +14,9 @@ public interface UserService extends UserDetailsService {
     User save(UserRegistrationDto registrationDto);
 
     Role saveRole(Role role);
-    void  addRoleToUser (String email,String roleName);
+
+
+   // void  addRoleToUser (String email,String roleName);
 
 
     User Update(User user);

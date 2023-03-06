@@ -121,11 +121,11 @@ public class UserRegistrationController {
         return ResponseEntity.ok().body(userService.saveRole(role));
     }
 
-    @PostMapping("/assignRole")
+ /*   @PostMapping("/assignRole")
     public ResponseEntity<Role> AssignRole(@RequestBody addRoleToUserForm form) {
         userService.addRoleToUser(form.getUserName(), form.getRoleName());
         return ResponseEntity.ok().build();
-    }
+    }*/
 
 
     @GetMapping("/roles")
