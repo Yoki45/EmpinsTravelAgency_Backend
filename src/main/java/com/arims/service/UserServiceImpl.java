@@ -10,13 +10,17 @@ import com.arims.util.Utils;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -63,12 +67,12 @@ public class UserServiceImpl implements UserService {
         return roleRepository.save(role);
     }
 
-   /* @Override
+  /*  @Override
     public void addRoleToUser(String email, String roleName) {
         User user = userRepository.findByEmail(email);
         Role role = roleRepository.findByName(roleName);
-        user.getRoles().add(role);
-=======
+        user.getRoles().add(role);*/
+
     @Override
     public void addRoleToUser(String email, Role role) {
 
@@ -83,7 +87,7 @@ public class UserServiceImpl implements UserService {
 
 
     }
-*/
+
     @Override
     public User updateUser(User user) {
         return userRepository.save(user);
@@ -135,10 +139,10 @@ public class UserServiceImpl implements UserService {
     public Optional<User> findOneByEmail(String email) {
         return userRepository.findOneByEmail(email);
     }
-
+/*
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles){
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName().name())).collect(Collectors.toList());
-    }
+    }*/
 
 
 

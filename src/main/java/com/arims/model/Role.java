@@ -1,10 +1,9 @@
 package com.arims.model;
 
 
-import com.arims.enums.ERole;
+import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 
 
 @Entity
@@ -15,15 +14,13 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Enumerated(EnumType.STRING)
-    @Column(length = 20)
-    private ERole name;
+ /*   private ERole name;
 
     public Role() {
 
     }
 
-    public Role(ERole name) {
+    public Role(Role name) {
         this.name = name;
     }
 
@@ -41,7 +38,7 @@ public class Role {
 
     public void setName(ERole name) {
         this.name = name;
-    }
+    }*/
 }
 
 
