@@ -11,7 +11,6 @@ import com.arims.util.Utils;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -55,7 +54,7 @@ public class UserServiceImpl implements UserService {
                 registrationDto.getPhone()
                 );
 
-                registrationDto.getPhone());
+                registrationDto.getPhone();
 
 
        return userRepository.save(user);
@@ -143,6 +142,12 @@ public class UserServiceImpl implements UserService {
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles){
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName().name())).collect(Collectors.toList());
     }*/
+
+    @Override
+    public Role saveRole(Role role) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'saveRole'");
+    }
 
 
 
