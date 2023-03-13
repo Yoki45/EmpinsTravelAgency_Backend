@@ -16,9 +16,6 @@ public interface UserService  {
     User save(UserRegistrationDto registrationDto);
 
 
-    Role saveRole(Role role);
-
-
    // void  addRoleToUser (String email,String roleName);
 
     UserRole saveRole(UserRole role);

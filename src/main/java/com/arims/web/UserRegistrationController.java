@@ -68,7 +68,7 @@ public class UserRegistrationController {
     //Roles API
 
     @PostMapping("/roles/save")
-    public ResponseEntity<Role> saveRole(@RequestBody Role role) {
+    public ResponseEntity<UserRole> saveRole(@RequestBody UserRole role) {
         return ResponseEntity.ok().body(userService.saveRole(role));
     }
 

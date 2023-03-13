@@ -15,7 +15,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -26,11 +25,7 @@ import java.util.stream.Collectors;
 @Transactional
 public class UserServiceImpl implements UserService {
 
-
-    //todo rolebased authentication
-
-
-
+    // todo rolebased authentication
 
     private UserRepository userRepository;
 
@@ -39,8 +34,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-
-    public UserServiceImpl(UserRepository userRepository,UserRoleRepository roleRepository) {
+    public UserServiceImpl(UserRepository userRepository, UserRoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
 
@@ -49,16 +43,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public User save(UserRegistrationDto registrationDto) {
         User user = new User(registrationDto.getFirstName(),
-               registrationDto.getLastName(), registrationDto.getEmail(),
-                passwordEncoder.encode(registrationDto.getPassword()),registrationDto.getGender(),
-
-                registrationDto.getPhone()
-                );
+                registrationDto.getLastName(), registrationDto.getEmail(),
+                passwordEncoder.encode(registrationDto.getPassword()), registrationDto.getGender(),
 
                 registrationDto.getPhone());
 
-
-       return userRepository.save(user);
+        return userRepository.save(user);
 
     }
 
@@ -67,24 +57,24 @@ public class UserServiceImpl implements UserService {
         return roleRepository.save(role);
     }
 
-  /*  @Override
-    public void addRoleToUser(String email, String roleName) {
-        User user = userRepository.findByEmail(email);
-        Role role = roleRepository.findByName(roleName);
-        user.getRoles().add(role);*/
+    /*
+     * @Override
+     * public void addRoleToUser(String email, String roleName) {
+     * User user = userRepository.findByEmail(email);
+     * Role role = roleRepository.findByName(roleName);
+     * user.getRoles().add(role);
+     */
 
     @Override
     public void addRoleToUser(String email, Role role) {
 
-        userRepository.findOneByEmail(email).ifPresent(user->{
-            UserRole  roles =new UserRole();
+        userRepository.findOneByEmail(email).ifPresent(user -> {
+            UserRole roles = new UserRole();
             roles.setUser(user);
             roles.setRole(role);
             roles.setCreationDate(Utils.getCurrentDate());
-             roleRepository.save(roles);
+            roleRepository.save(roles);
         });
-       
-
 
     }
 
@@ -101,14 +91,9 @@ public class UserServiceImpl implements UserService {
         });
     }
 
-
-
-
     public User updateUserProfile(User user) {
-        return  this.userRepository.save(user);
+        return this.userRepository.save(user);
     }
-
-
 
     @Override
     public User findUser(String email) {
@@ -118,9 +103,7 @@ public class UserServiceImpl implements UserService {
 
     }
 
-
-
-    public Optional<User> find(Long id){
+    public Optional<User> find(Long id) {
 
         return userRepository.findById(id);
     }
@@ -139,15 +122,12 @@ public class UserServiceImpl implements UserService {
     public Optional<User> findOneByEmail(String email) {
         return userRepository.findOneByEmail(email);
     }
-/*
-    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles){
-        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName().name())).collect(Collectors.toList());
-    }*/
-
-
-
-
-
-
+    /*
+     * private Collection<? extends GrantedAuthority>
+     * mapRolesToAuthorities(Collection<Role> roles){
+     * return roles.stream().map(role -> new
+     * SimpleGrantedAuthority(role.getName().name())).collect(Collectors.toList());
+     * }
+     */
 
 }
